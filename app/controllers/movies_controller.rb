@@ -21,9 +21,16 @@ class MoviesController < ApplicationController
     @movie = Movie.find_by(id: params[:mid])
   end
 
+  def search
+    @movies = Movie.where("title LIKE :search_string", {search_string: "%#{params[:search_string]}%"}).limit(10)
+    if @movies.count == 0
+      @movies = []
+    end
+  end
+
   private
     def current_user
-        @user = User.find_by(token: params[:token])  
+        @user = User.find_by(token: params[:token])
         # validate token and set proper error message  
         @error = @user.nil?
         @message.append({token: "Token is in valid"}) if @error

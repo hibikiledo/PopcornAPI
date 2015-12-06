@@ -1,4 +1,5 @@
 unless @error
+  json.error @error
   json.profile do
     json.id             @user.readable_id
     json.profile_pic    @user.profile_pic 

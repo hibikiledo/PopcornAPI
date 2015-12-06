@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151130073600) do
+ActiveRecord::Schema.define(version: 20151201013144) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(version: 20151130073600) do
 
   add_index "reviews", ["movie_id"], name: "index_reviews_on_movie_id", using: :btree
   add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
+
+  create_table "suggestions", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4, null: false
+    t.integer  "movie_id",   limit: 4, null: false
+    t.integer  "stars",      limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "suggestions", ["movie_id"], name: "index_suggestions_on_movie_id", using: :btree
+  add_index "suggestions", ["user_id"], name: "index_suggestions_on_user_id", using: :btree
 
   create_table "user_connections", id: false, force: :cascade do |t|
     t.integer "user_a_id", limit: 4, null: false

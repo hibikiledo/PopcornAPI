@@ -19,6 +19,8 @@ gem 'delayed_job_active_record'
 gem "daemons"
 # Use Active Record UNION
 gem 'active_record_union'
+# Use HIRB for pretty output in console
+gem 'hirb'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

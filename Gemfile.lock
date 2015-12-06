@@ -62,6 +62,7 @@ GEM
     execjs (2.6.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    hirb (0.7.3)
     i18n (0.7.0)
     jbuilder (2.3.2)
       activesupport (>= 3.0.0, < 5)
@@ -155,6 +156,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   daemons
   delayed_job_active_record
+  hirb
   jbuilder (~> 2.0)
   jquery-rails
   mysql2 (~> 0.3.20)

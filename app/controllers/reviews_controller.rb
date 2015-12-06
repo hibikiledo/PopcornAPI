@@ -24,10 +24,9 @@ class ReviewsController < ApplicationController
       @message.append(@review.errors.messages) if @error   
 
       unless @error
-        # update current user table
-        #@review.delay.propagate_table(@user)
+        # compute new user suggestions
         Delayed::Job.enqueue ComputeJob.new(@user)
-
+        # propagate changes to its friends
         @user.friends.each do |friend|
           Delayed::Job.enqueue ComputeJob.new(friend)
         end

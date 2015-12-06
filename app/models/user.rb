@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
 
   has_many :reviews
+  has_many :suggestions
 
   # uni direction relationship
   has_and_belongs_to_many(

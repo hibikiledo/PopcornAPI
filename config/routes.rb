@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   # Movie
   get 'movies/:mid' => 'movies#info'
+  get 'movies/search/:search_string' => 'movies#search'
   post 'movies/:token/create' => 'movies#create'
 
 

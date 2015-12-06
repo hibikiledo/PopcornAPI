@@ -3,8 +3,8 @@ ComputeJob = Struct.new(:user) do
   def perform
     build_resource_file(user)
     compute()
+    update_suggestions(user)
   end
-
 
   private
     def build_resource_file(user)
@@ -31,7 +31,7 @@ ComputeJob = Struct.new(:user) do
 
       # build up keys for movies
       review_union.each do |review|
-        movie_keys.append(review.movie.title)
+        movie_keys.append(review.movie)
       end
 
       puts "-------------- REVIEW UNION -----------------"
@@ -54,22 +54,14 @@ ComputeJob = Struct.new(:user) do
       movie_keys.each_with_index do |movie, i|
 
         res_file.write("\n")
-        res_file.write(movie)
+        res_file.write(movie.id)
         res_file.write(',')
 
         user_keys.each_with_index do |user, j|
 
-          user_obj = User.find_by(email: user.email)
-          movie_obj = Movie.find_by(title: movie)
+          puts "-------------------- REVIEW ------------------"
 
-          puts "-------------- Retrieve Objects --------------"
-
-          puts user_obj       
-          puts movie_obj
-
-          puts "----------------------------------------------"
-
-          specific_review = Review.find_by(user: user_obj, movie: movie_obj)
+          specific_review = Review.find_by(user: user, movie: movie)
           puts specific_review
 
           puts "--------------------- END --------------------"        
@@ -96,6 +88,27 @@ ComputeJob = Struct.new(:user) do
 
       # run the python script
       system(exec_string)
+    end
+
+    def update_suggestions(user)
+      # generate result file path
+      result_file_path = Rails.root.join("outputs/output_#{user.email}.csv")
+      # read output file contents
+      result_file = File.open(result_file_path, 'r')
+      lines = result_file.readlines
+      # iterate through all suggestions
+      lines.each do |line|
+        movie_id, stars = line.split(',')
+        # create params
+        suggestion_params = {
+          user_id: user.id,
+          movie_id: movie_id,
+          stars: stars
+        }
+        # add suggestion into database
+        suggestion = Suggestion.create(suggestion_params)
+        puts suggestion if suggestion
+      end
 
     end
 

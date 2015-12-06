@@ -39,4 +39,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Autoload HIRB when irb session stars
+  if $0 == 'irb'
+    require 'hirb'
+    Hirb.enable
+  end
+
 end
