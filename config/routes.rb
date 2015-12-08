@@ -20,6 +20,10 @@ Rails.application.routes.draw do
   post 'movies/:token/create' => 'movies#create'
 
 
+  # Suggestion
+  get 'suggestions/:token' => 'suggestion#suggest'
+
+
 
 
 

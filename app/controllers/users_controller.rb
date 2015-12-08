@@ -18,6 +18,7 @@ class UsersController < ApplicationController
         create_user_params[:email] + create_user_params[:password])
 
       @user.token = token
+      @user.readable_id = create_user_params[:email].split("@")[0]
       @user.save
 
       @error = false
@@ -66,8 +67,8 @@ class UsersController < ApplicationController
     picture_name = picture[:fname]
     # Create a new file for saving image
     file_name = Time.new.to_s.gsub!(' ', '_') + '.jpg'    
-    file_name = File.join('uploads', file_name)
-    image_file = File.new(file_name, File::CREAT|File::TRUNC|File::RDWR, 0644)
+    file_name_rpath = File.join('public', 'uploads', file_name)
+    image_file = File.new(file_name_rpath, File::CREAT|File::TRUNC|File::RDWR, 0644)
     image_file.syswrite(picture_bin)
     image_file.close()
     # Update image file name to user object
@@ -81,7 +82,7 @@ class UsersController < ApplicationController
   # /users/:token/befriend/:uid
   def befriend
     user = current_user
-    another_user = User.find_by(id: params[:uid])
+    another_user = User.find_by(readable_id: params[:uid])
     # set error flag and message
     @error = user.nil? || another_user.nil?
     @message.append({uid: "Friend uid is invalid."}) if another_user.nil?
