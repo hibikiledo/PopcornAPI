@@ -14,16 +14,13 @@ Rails.application.routes.draw do
   # Review
   post 'reviews/:token/create' => 'reviews#create'
 
-  # Movie
-  get 'movies/:mid' => 'movies#info'
+  # Movie  
+  get 'movies/info/:mid' => 'movies#info'
   get 'movies/search/:search_string' => 'movies#search'
   post 'movies/:token/create' => 'movies#create'
 
-
   # Suggestion
   get 'suggestions/:token' => 'suggestion#suggest'
-
-
 
 
 

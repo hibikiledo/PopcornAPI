@@ -22,7 +22,7 @@ class MoviesController < ApplicationController
   end
 
   def search
-    @movies = Movie.where("title LIKE :search_string", {search_string: "%#{params[:search_string]}%"}).limit(10)
+    @movies = Movie.where("title LIKE :search_string", {search_string: "%#{params[:search_string]}%"}).order(year: :desc).limit(10)
     if @movies.count == 0
       @movies = []
     end

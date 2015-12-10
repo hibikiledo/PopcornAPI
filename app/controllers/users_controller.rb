@@ -74,6 +74,8 @@ class UsersController < ApplicationController
     # Update image file name to user object
     user.profile_pic = file_name
     user.save
+    # Expose to response
+    @pub_filename = file_name
   end
 
   # [POST]
@@ -119,7 +121,7 @@ class UsersController < ApplicationController
     end
 
     def update_user_params
-      params.require(:profile).permit(:display_name, :email, :profile_pic)
+      params.require(:profile).permit(:readable_id)
     end
 
     def create_user_params

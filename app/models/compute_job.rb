@@ -1,9 +1,14 @@
+require "net/http"
+require "uri"
+
 ComputeJob = Struct.new(:user) do
 
   def perform
     build_resource_file(user)
     compute()
+    clear_suggestions(user)
     update_suggestions(user)
+    send_push_notification(user.readable_id)
   end
 
   private
@@ -90,6 +95,10 @@ ComputeJob = Struct.new(:user) do
       system(exec_string)
     end
 
+    def clear_suggestions(user)
+      user.suggestions.destroy_all
+    end
+
     def update_suggestions(user)
       # generate result file path
       result_file_path = Rails.root.join("outputs/output_#{user.email}.csv")
@@ -109,6 +118,32 @@ ComputeJob = Struct.new(:user) do
         suggestion = Suggestion.create(suggestion_params)
         puts suggestion if suggestion
       end
+
+    end
+
+    def send_push_notification(readable_id)
+      puts "[Notification] Sending request to GCM"
+
+      uri = URI.parse("https://gcm-http.googleapis.com")
+
+      request_data = {
+        "to" => "/topics/#{readable_id}",
+        "data" => {
+          "message" => "New recommendation!"
+        }
+      }
+
+      headers = {
+        'Content-Type' => 'application/json', 
+        'Authorization' => 'key=AIzaSyCeYOqajJPmxm7qhUvBx-1VPcZFTIpbLec'
+      }
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      response = http.post("/gcm/send", request_data.to_json, headers)
+
+      puts "Response: #{response.body}"
 
     end
 

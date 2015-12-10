@@ -172,7 +172,7 @@ out = np.zeros((len(movies),len(names)))
 
 for i in range(0,len(movies)):
             for j in range(0,len(names)):
-                    out[i][j] = float("{0:.2f}".format(float((np.dot(result_theta[j].T,result_x[i])))+float((average[i]))))
+                    out[i][j] = round(float("{0:.2f}".format(float((np.dot(result_theta[j].T,result_x[i])))+float((average[i])))),0)
 
 class TableCell:
     

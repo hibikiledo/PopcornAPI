@@ -7,7 +7,7 @@ class SuggestionController < ApplicationController
   def suggest
     @user = current_user
     if @user
-      @suggestions = @user.suggestions
+      @suggestions = @user.suggestions.order(stars: :desc)
     end
   end
 
