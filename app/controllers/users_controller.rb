@@ -34,6 +34,7 @@ class UsersController < ApplicationController
   # /users/login
   def login
     @user = User.find_by(email: login_params[:email])
+    @error = @user.nil?
     if @user
       @error = (@user.password != login_params[:password])
     end
